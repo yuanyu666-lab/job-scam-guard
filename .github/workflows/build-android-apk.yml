@@ -19,19 +19,11 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Grant execute permission
-        working-directory: mobile/android
-        run: chmod +x gradlew 2>/dev/null || true
-
-      - name: Generate Gradle Wrapper
-        working-directory: mobile/android
-        run: |
-          gradle wrapper --gradle-version 8.2
-          chmod +x gradlew
-
       - name: Build debug APK
         working-directory: mobile/android
-        run: ./gradlew assembleDebug --no-daemon -q
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
