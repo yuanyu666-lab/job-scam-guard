@@ -1,0 +1,4 @@
+{
+  "api_token": "在此填写手机端 API Token（可选）",
+  "comment": "复制为 data/mobile_api.json。不配置则手机 App 的 API Key 留空"
+}

@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "api_key": "在 https://platform.deepseek.com/api_keys 申请后粘贴",
+  "model": "deepseek-chat",
+  "ai_trigger": "borderline",
+  "borderline_min": 35,
+  "borderline_max": 75,
+  "allow_fallback": false,
+  "retry_on_429": 2,
+  "use_on_analyze": true,
+  "timeout_seconds": 60,
+  "comment": "复制为 data/deepseek_config.json，勿上传含真实 key 的文件"
+}

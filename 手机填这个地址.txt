@@ -1,0 +1,6 @@
+（尚未生成）
+
+请双击运行：scripts\手机公网隧道.bat
+
+在「招聘防骗-隧道」窗口里会出现 https://xxxx.trycloudflare.com
+脚本也会自动把地址写进本文件。

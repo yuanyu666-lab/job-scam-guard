@@ -1,0 +1,5 @@
+{
+  "use_paid_api": false,
+  "token": "仅当 use_paid_api 为 true 时填写天眼查 Token",
+  "comment": "复制为 data/company_api.json，勿上传含真实 token 的文件"
+}

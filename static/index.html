@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>招聘防骗</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header class="header">
+    <h1>招聘防骗</h1>
+    <p>本地规则 + 可选 Gemini 3.1 · 规则见 <code>data/patterns.json</code>，AI 见 <code>data/gemini_config.json</code></p>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <div class="type-row">
+        <span class="type-label">内容类型</span>
+        <span id="contentTypeLabel" class="type-detected">自动识别</span>
+      </div>
+
+      <div id="historyBar" class="history-bar hidden"></div>
+
+      <textarea id="inputText" placeholder="粘贴 JD 或聊天记录…"></textarea>
+
+      <div class="actions">
+        <button id="btnAnalyze" class="btn primary">检测</button>
+        <button id="btnSample" class="btn ghost">示例</button>
+        <button id="btnClear" class="btn ghost">清空</button>
+        <label class="gemini-toggle" id="aiProviderWrap" title="配置 data/deepseek_config.json 或 gemini_config.json">
+          云端 AI
+          <select id="aiProvider">
+            <option value="none">关</option>
+            <option value="deepseek">DeepSeek</option>
+            <option value="gemini">Gemini</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="url-row">
+        <input id="urlInput" type="text" placeholder="可疑链接（可选）" />
+        <button id="btnUrl" class="btn ghost">查链接</button>
+      </div>
+      <div class="url-row company-row">
+        <input id="companyInput" type="text" placeholder="识别后自动填入公司名" />
+      </div>
+      <div id="companyLinks" class="company-links hidden">
+        <span id="companyDetectLabel" class="detect-label"></span>
+        <button type="button" id="btnOpenBoth" class="link-btn both">双开</button>
+        <a id="linkTyc" class="link-btn tyc" href="#" target="_blank" rel="noopener">天眼查</a>
+        <a id="linkQcc" class="link-btn qcc" href="#" target="_blank" rel="noopener">企查查</a>
+        <a id="linkAqc" class="link-btn aqc" href="#" target="_blank" rel="noopener">爱企查</a>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="empty-state" id="emptyState">
+        <p>粘贴内容后点「检测」</p>
+      </div>
+      <div class="result-content hidden" id="resultContent">
+        <div class="headline-block" id="headlineBlock">
+          <p id="headlineText" class="headline-text"></p>
+          <ul id="actionList" class="action-list"></ul>
+        </div>
+
+        <div class="score-card" id="scoreCard">
+          <div class="score-meta">
+            <span id="riskLevel" class="badge">待核实</span>
+            <span class="score-label" id="scoreHint">综合评估</span>
+          </div>
+          <span id="riskScore" class="score-value-mini hidden">0</span>
+        </div>
+
+        <div id="bizWarnings" class="biz-warnings hidden"></div>
+
+        <div id="highlightBox" class="highlight-box hidden">
+          <h3>命中词</h3>
+          <pre id="highlightText" class="highlight-text"></pre>
+        </div>
+
+        <div id="urlWarnings" class="url-warnings hidden"></div>
+
+        <div id="aiBlock" class="ai-block hidden">
+          <h3>Gemini 研判</h3>
+          <p id="aiSummary" class="ai-summary"></p>
+          <ul id="aiRedFlags" class="match-list"></ul>
+        </div>
+
+        <h3>风险项</h3>
+        <ul id="matchList" class="match-list"></ul>
+
+        <h3>建议</h3>
+        <ul id="suggestionList" class="suggestion-list"></ul>
+
+        <div id="companyBlock" class="company-block hidden">
+          <h3>企业工商</h3>
+          <pre id="companyResult" class="company-result"></pre>
+        </div>
+
+        <div class="note-row">
+          <input id="noteInput" type="text" placeholder="备注（可选，如：BOSS某HR）" />
+          <button id="btnNote" class="btn secondary">记一笔</button>
+        </div>
+        <p id="noteMsg" class="note-msg"></p>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

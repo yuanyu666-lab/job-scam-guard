@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>招聘防骗 · 手机版</title>
+  <style>
+    :root { --bg:#0f1419; --card:#1a2332; --text:#e7ecf3; --muted:#8b9cb3; --accent:#3b82f6; --high:#ef4444; --mid:#f59e0b; --low:#22c55e; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); padding: 12px; min-height: 100vh; }
+    h1 { font-size: 1.1rem; margin-bottom: 4px; }
+    .sub { color: var(--muted); font-size: 0.8rem; margin-bottom: 12px; line-height: 1.4; }
+    textarea { width: 100%; min-height: 140px; background: var(--card); border: 1px solid #2d3a4f; border-radius: 10px; color: var(--text); padding: 12px; font-size: 16px; }
+    .row { display: flex; gap: 8px; margin: 10px 0; flex-wrap: wrap; }
+    button, select { font-size: 15px; padding: 10px 14px; border-radius: 10px; border: none; cursor: pointer; }
+    .primary { background: var(--accent); color: #fff; flex: 1; min-width: 120px; }
+    .ghost { background: var(--card); color: var(--text); border: 1px solid #2d3a4f; }
+    .card { background: var(--card); border-radius: 12px; padding: 14px; margin-top: 12px; border: 1px solid #2d3a4f; }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 6px; font-weight: 700; font-size: 0.85rem; }
+    .high { background: #3f1518; color: var(--high); }
+    .mid { background: #3f2e10; color: var(--mid); }
+    .low { background: #0f2e22; color: var(--low); }
+    .headline { font-weight: 700; margin: 8px 0; line-height: 1.4; }
+    ul { padding-left: 18px; color: var(--muted); font-size: 0.9rem; }
+    .hidden { display: none; }
+    #cfg { width: 100%; margin-bottom: 6px; padding: 8px; border-radius: 8px; border: 1px solid #2d3a4f; background: #121a24; color: var(--text); font-size: 14px; }
+  </style>
+</head>
+<body>
+  <h1>招聘防骗</h1>
+  <p class="sub">框选识图请用 Android 悬浮 App；此处为粘贴检测（需公网 API）。</p>
+  <input id="apiBase" type="url" placeholder="https://你的服务器" />
+  <input id="apiKey" type="password" placeholder="X-API-Key（可选）" style="margin-top:6px" />
+  <textarea id="text" placeholder="粘贴 BOSS / 微信 / 天眼查摘要…"></textarea>
+  <div class="row">
+    <button class="primary" id="go">检测</button>
+    <select id="ai"><option value="none">AI关</option><option value="deepseek">DS</option><option value="gemini">GM</option></select>
+  </div>
+  <div id="out" class="card hidden"></div>
+  <script>
+    const baseKey = "jsg_api_base";
+    const keyKey = "jsg_api_key";
+    apiBase.value = localStorage.getItem(baseKey) || "";
+    apiKey.value = localStorage.getItem(keyKey) || "";
+    go.onclick = async () => {
+      const base = apiBase.value.replace(/\/$/, "");
+      if (!base) { alert("请填写服务器 HTTPS 地址"); return; }
+      localStorage.setItem(baseKey, base);
+      localStorage.setItem(keyKey, apiKey.value);
+      const headers = { "Content-Type": "application/json" };
+      if (apiKey.value) headers["X-API-Key"] = apiKey.value;
+      go.disabled = true;
+      go.textContent = "检测中…";
+      try {
+        const res = await fetch(base + "/api/analyze", {
+          method: "POST",
+          headers,
+          body: JSON.stringify({ text: text.value, content_type: "auto", use_ai: ai.value !== "none", provider: ai.value }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || res.status);
+        const lvl = data.risk_level || "低危";
+        const cls = lvl === "高危" ? "high" : lvl === "中危" ? "mid" : "low";
+        out.classList.remove("hidden");
+        out.innerHTML = `<span class="badge ${cls}">${data.risk_level_display || lvl}</span>
+          <p class="headline">${data.headline || ""}</p>
+          <ul>${(data.actions || []).map(a => `<li>${a}</li>`).join("")}</ul>`;
+      } catch (e) { alert("失败: " + e.message); }
+      finally { go.disabled = false; go.textContent = "检测"; }
+    };
+  </script>
+</body>
+</html>

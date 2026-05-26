@@ -1,0 +1,4 @@
+{
+  "provider": "deepseek",
+  "comment": "provider 可选 deepseek | gemini | none。复制为 data/ai_config.json"
+}

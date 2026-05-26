@@ -1,0 +1,19 @@
+﻿# 上传到 GitHub 用
+
+把 **本文件夹里的所有内容**（不是 github-upload 文件夹本身）拖到 GitHub 仓库根目录上传。
+
+## 已包含
+- app/、static/、mobile/、scripts/、tests/
+- data/（仅规则与 .example 模板，无 API Key）
+- .github/workflows/（自动打包 APK）
+
+## 已排除
+- __pycache__、.venv
+- settings.json、deepseek/gemini 等含密钥文件
+- ngrok.exe（需本机自行下载）
+
+## 上传步骤
+1. 打开 https://github.com/yuanyu666-lab/job-scam-guard/upload/main
+2. 把本文件夹 **内部所有文件和子文件夹** 拖进去
+3. Commit message: `add full project`
+4. Actions → Build Android APK → Run workflow

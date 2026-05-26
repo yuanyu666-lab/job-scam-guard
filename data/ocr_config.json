@@ -1,0 +1,4 @@
+{
+  "engine": "fast",
+  "comment": "fast=轻量(RapidOCR+Windows)；auto=Paddle优先。也可在 settings.json 设 ocr_engine"
+}

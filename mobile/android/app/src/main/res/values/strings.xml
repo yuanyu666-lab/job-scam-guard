@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">招聘防骗</string>
+    <string name="bubble_label">盾</string>
+    <string name="crop_hint">拖动框选招聘/聊天文字区域</string>
+    <string name="channel_capture">屏幕分析</string>
+</resources>
